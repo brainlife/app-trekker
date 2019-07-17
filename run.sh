@@ -4,7 +4,7 @@ set -e
 set -x
 
 #running trekker
-../trekker/build/bin/trekker \
+./trekker/build/bin/trekker \
     -fod lmax${LMAX}.nii.gz \
     -seed_image gmwmi_seed.nii.gz \
     -seed_count ${COUNT} \
