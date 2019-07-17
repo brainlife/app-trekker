@@ -1,0 +1,10 @@
+{
+    "dwi": "/testdata/dwi.nii.gz",
+    "bvecs": "/testdata/dwi.bvecs",
+    "bvals": "/testdata/dwi.bvals",
+    "anat":	"/testdata/t1.nii.gz",
+    "count":	100000,
+    "lmax":	8,
+    "min_length":	10,
+    "max_length":	200
+}
