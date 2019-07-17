@@ -1,8 +1,8 @@
 {
-    "dwi": "/testdata/dwi.nii.gz",
-    "bvecs": "/testdata/dwi.bvecs",
-    "bvals": "/testdata/dwi.bvals",
-    "anat":	"/testdata/t1.nii.gz",
+    "dwi": "testdata/dwi/dwi.nii.gz",
+    "bvecs": "testdata/dwi/dwi.bvecs",
+    "bvals": "testdata/dwi/dwi.bvals",
+    "t1":	"testdata/t1w/t1.nii.gz",
     "count":	100000,
     "lmax":	8,
     "min_length":	10,
