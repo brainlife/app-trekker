@@ -15,7 +15,7 @@ You can run this App on brainlife.io, or if you'd like to run it locally, you ca
 2) Stage input file (dwi)
 
 ```
-bl dataset download <dataset id for any neuro/dwi data from barinlife>
+bl dataset download <dataset id for any neuro/dwi data and neuro/anat/t1w data from barinlife>
 ```
 
 3) Create config.json (you can copy from config.json.sample)
@@ -24,7 +24,12 @@ bl dataset download <dataset id for any neuro/dwi data from barinlife>
 {
     "dwi": "testdata/dwi.nii.gz",
     "bvecs": "testdata/dwi.bvecs",
-    "bvals": "testdata/dwi.bvals"
+    "bvals": "testdata/dwi.bvals",
+    "anat": "testdata/t1.nii.gz",
+    "count":    50000,
+    "lmax":  8,
+    "min_length":   10,
+    "max_length":   200
 }
 ```
 
