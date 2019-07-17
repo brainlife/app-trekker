@@ -14,7 +14,7 @@ COUNT=`jq -r '.count' config.json`
 LMAX=`jq -r '.lmax' config.json`
 MINLENGTH=`jq -r '.min_length' config.json`
 MAXLENGTH=`jq -r '.max_length' config.json`
-NUMFIBERS=`jq -r '.num_fibers' config.json`
+NUMFIBERS=`jq -r '.count' config.json`
 
 # convert dwi to mrtrix format
 mrconvert -fslgrad $bvecs $bvals $dwi dwi.mif --export_grad_mrtrix dwi.b -force -nthreads $NCORE -quiet
