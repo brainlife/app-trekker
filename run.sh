@@ -3,6 +3,11 @@
 set -e
 set -x
 
+LMAX=`jq -r '.lmax' config.json`
+COUNT=`jq -r '.count' config.json`
+MINLENGTH=`jq -r '.min_length' .json`
+MAXLENGTH=`jq -r '.max_length' .json`
+
 #running trekker
 ./trekker/build/bin/trekker \
     -fod lmax${LMAX}.nii.gz \
