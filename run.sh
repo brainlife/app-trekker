@@ -9,7 +9,7 @@ MINLENGTH=`jq -r '.min_length' config.json`
 MAXLENGTH=`jq -r '.max_length' config.json`
 
 #running trekker
-trekker/build/bin/trekker \
+/trekker/build/bin/trekker \
     -fod lmax${LMAX}.nii.gz \
     -seed_image gmwmi_seed.nii.gz \
     -seed_count ${COUNT} \
