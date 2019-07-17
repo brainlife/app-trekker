@@ -5,8 +5,8 @@ set -x
 
 LMAX=`jq -r '.lmax' config.json`
 COUNT=`jq -r '.count' config.json`
-MINLENGTH=`jq -r '.min_length' .json`
-MAXLENGTH=`jq -r '.max_length' .json`
+MINLENGTH=`jq -r '.min_length' config.json`
+MAXLENGTH=`jq -r '.max_length' config.json`
 
 #running trekker
 ./trekker/build/bin/trekker \
