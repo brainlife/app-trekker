@@ -17,16 +17,33 @@ MAXLENGTH=`jq -r '.max_length' config.json`
 NUMFIBERS=`jq -r '.count' config.json`
 
 # convert dwi to mrtrix format
-mrconvert -fslgrad $bvecs $bvals $dwi dwi.mif --export_grad_mrtrix dwi.b -force -nthreads $NCORE -quiet
+if [ ! -f dwi.b ]; then
+	mrconvert -fslgrad $bvecs $bvals $dwi dwi.mif --export_grad_mrtrix dwi.b -force -nthreads $NCORE -quiet
+else
+	echo "file created. skipping ..."
+fi
 
 # create mask of dwi
-dwi2mask dwi.mif mask.mif -force -nthreads $NCORE -quiet
+if [ ! -f mask.mif ]; then
+	dwi2mask dwi.mif mask.mif -force -nthreads $NCORE -quietelse
+else
+	echo "file created. skipping ..."
+fi
+
 
 # convert anatomical t1 to mrtrix format
-mrconvert ${anat} anat.mif -force -nthreads $NCORE -quiet
+if [ ! -f anat.mif ]; then
+	mrconvert ${anat} anat.mif -force -nthreads $NCORE -quiet
+else
+	echo "file created. skipping ..."
+fi	
 
 # extract b0 image from dwi
-dwiextract dwi.mif - -bzero | mrmath - mean b0.mif -axis 3 -force -nthreads $NCORE -quiet
+if [ ! -f b0.mif ]; then
+	dwiextract dwi.mif - -bzero | mrmath - mean b0.mif -axis 3 -force -nthreads $NCORE -quiet
+else
+	echo "file created. skipping ..."
+fi
 
 ## check if b0 volume successfully created
 if [ ! -f b0.mif ]; then
