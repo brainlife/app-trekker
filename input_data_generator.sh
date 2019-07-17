@@ -84,7 +84,7 @@ tensor2metric -mask mask.mif -adc md.mif -fa fa.mif -ad ad.mif -rd rd.mif -cl cl
 # generate gm-wm interface seed mask
 5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE -quiet
 
-generate csf,gm,wm masks
+# generate csf,gm,wm masks
 mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE -quiet
 mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE -quiet
 mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE -quiet
