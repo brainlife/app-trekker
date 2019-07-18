@@ -5,6 +5,11 @@ set -x
 
 NCORE=8
 
+mkdir -p track
+mkdir -p csd
+mkdir -p mask
+mkdir -p tensor
+
 dwi=$(jq -r .dwi config.json)
 bvecs=`jq -r '.bvecs' config.json`
 bvals=`jq -r '.bvals' config.json`
@@ -71,24 +76,24 @@ while [ $iter -lt $(($NSHELL+1)) ]; do
 done
 
 # extract mask
-dwi2tensor -mask mask.mif dwi.mif dt.mif -bvalue_scaling false -force -nthreads $NCORE
+[ ! -f dt.mif ] && dwi2tensor -mask mask.mif dwi.mif dt.mif -bvalue_scaling false -force -nthreads $NCORE
 
 # creating tensor metrics
-tensor2metric -mask mask.mif -adc md.mif -fa fa.mif -ad ad.mif -rd rd.mif -cl cl.mif -cp cp.mif -cs cs.mif dt.mif -force -nthreads $NCORE
+[ ! -f fa.mif ] && tensor2metric -mask mask.mif -adc md.mif -fa fa.mif -ad ad.mif -rd rd.mif -cl cl.mif -cp cp.mif -cs cs.mif dt.mif -force -nthreads $NCORE
 
 # generate 5-tissue-type (5TT) tracking mask
-5ttgen fsl anat.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force -nthreads $NCORE
+[ ! -f 5tt.mif ] && 5ttgen fsl anat.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force -nthreads $NCORE
 
 # generate gm-wm interface seed mask
-5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE
+[ ! -f gmwmi_seed.mif ] && 5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE
 
 # generate csf,gm,wm masks
-mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
-mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
-mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
+[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
+[ ! -f gm.mif ] && mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
+[ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
 
 # create visualization output
-5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE
+[ ! -f 5ttvis.mif ] && 5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE
 
 #creating response (should take about 15min)
 if [ $MS ]; then
@@ -109,47 +114,48 @@ else
 fi
 
 # convert to niftis
-mrconvert wmt_lmax${LMAX}_fod.mif -stride 1,2,3,4 lmax${LMAX}.nii.gz -force -nthreads $NCORE
+mrconvert wmt_lmax${LMAX}_fod.mif -stride 1,2,3,4 ./csd/lmax${LMAX}.nii.gz -force -nthreads $NCORE
 
 # copy response file
 cp wmt.txt response.txt
 
 ## tensor outputs
-mrconvert fa.mif -stride 1,2,3,4 fa.nii.gz -force -nthreads $NCORE
-mrconvert md.mif -stride 1,2,3,4 md.nii.gz -force -nthreads $NCORE
-mrconvert ad.mif -stride 1,2,3,4 ad.nii.gz -force -nthreads $NCORE
-mrconvert rd.mif -stride 1,2,3,4 rd.nii.gz -force -nthreads $NCORE
+mrconvert fa.mif -stride 1,2,3,4 ./tensor/fa.nii.gz -force -nthreads $NCORE
+mrconvert md.mif -stride 1,2,3,4 ./tensor/md.nii.gz -force -nthreads $NCORE
+mrconvert ad.mif -stride 1,2,3,4 ./tensor/ad.nii.gz -force -nthreads $NCORE
+mrconvert rd.mif -stride 1,2,3,4 ./tensor/rd.nii.gz -force -nthreads $NCORE
 
 ## westin shapes (also tensor)
-mrconvert cl.mif -stride 1,2,3,4 cl.nii.gz -force -nthreads $NCORE
-mrconvert cp.mif -stride 1,2,3,4 cp.nii.gz -force -nthreads $NCORE
-mrconvert cs.mif -stride 1,2,3,4 cs.nii.gz -force -nthreads $NCORE
+mrconvert cl.mif -stride 1,2,3,4 ./tensor/cl.nii.gz -force -nthreads $NCORE
+mrconvert cp.mif -stride 1,2,3,4 ./tensor/cp.nii.gz -force -nthreads $NCORE
+mrconvert cs.mif -stride 1,2,3,4 ./tensor/cs.nii.gz -force -nthreads $NCORE
 
 ## tensor itself
-mrconvert dt.mif -stride 1,2,3,4 tensor.nii.gz -force -nthreads $NCORE
+mrconvert dt.mif -stride 1,2,3,4 ./tensor/tensor.nii.gz -force -nthreads $NCORE
 
 ## 5 tissue type visualization
-mrconvert 5ttvis.mif -stride 1,2,3,4 5ttvis.nii.gz -force -nthreads $NCORE
-mrconvert 5tt.mif -stride 1,2,3,4 5tt.nii.gz -force -nthreads $NCORE
-mrconvert gmwmi_seed.mif -stride 1,2,3,4 gmwmi_seed.nii.gz -force -nthreads $NCORE
+mrconvert 5ttvis.mif -stride 1,2,3,4 ./mask/5ttvis.nii.gz -force -nthreads $NCORE
+mrconvert 5tt.mif -stride 1,2,3,4 ./mask/5tt.nii.gz -force -nthreads $NCORE
+mrconvert gmwmi_seed.mif -stride 1,2,3,4 ./mask/gmwmi_seed.nii.gz -force -nthreads $NCORE
 
 # masks
-mrconvert gm.mif -stride 1,2,3,4 gm.nii.gz -force -nthreads $NCORE
-mrconvert csf.mif -stride 1,2,3,4 csf.nii.gz -force -nthreads $NCORE
-mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE
-mrconvert mask.mif -stride 1,2,3,4 mask.nii.gz -force -nthreads $NCORE
+mrconvert gm.mif -stride 1,2,3,4 ./mask/gm.nii.gz -force -nthreads $NCORE
+mrconvert csf.mif -stride 1,2,3,4 ./mask/csf.nii.gz -force -nthreads $NCORE
+mrconvert wm.mif -stride 1,2,3,4 ./mask/wm.nii.gz -force -nthreads $NCORE
+mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
 
 /trekker/build/bin/trekker \
-    -fod lmax${LMAX}.nii.gz \
-    -seed_image gmwmi_seed.nii.gz \
+    -fod ./csd/lmax${LMAX}.nii.gz \
+    -seed_image ./mask/gmwmi_seed.nii.gz \
     -seed_count ${COUNT} \
-    -pathway=discard_if_ends_inside wm.nii.gz \
-    -pathway=discard_if_enters csf.nii.gz \
+    -pathway=discard_if_ends_inside ./mask/wm.nii.gz \
+    -pathway=discard_if_enters ./mask/csf.nii.gz \
     -minLength ${MINLENGTH} \
     -maxLength ${MAXLENGTH} \
     -output output.vtk
 
 # convert output vtk to tck
-mkdir -p track
 tckconvert output.vtk track/track.tck -force -nthreads $NCORE
 
+# clean up
+rm -rf *.mif *.b ./tmp
