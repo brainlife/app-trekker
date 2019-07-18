@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -x
+#set -e
+#set -x
 
 NCORE=8
 
@@ -146,7 +146,7 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
 
 /trekker/build/bin/trekker \
     -fod ./csd/lmax${LMAX}.nii.gz \
-    -seed_image ./mask/gmwmi_seed.nii.gz \
+    -seed_image ./mask/wm.nii.gz \
     -seed_count ${COUNT} \
     -pathway=discard_if_ends_inside ./mask/wm.nii.gz \
     -pathway=discard_if_enters ./mask/csf.nii.gz \
@@ -161,4 +161,4 @@ tckconvert output.vtk track/track.tck -force -nthreads $NCORE
 echo "{\"track\": $(cat output.json)}" > product.json
 
 # clean up
-rm -rf *.mif *.b ./tmp
+#rm -rf *.mif *.b ./tmp
