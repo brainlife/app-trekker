@@ -3,7 +3,7 @@
     "bvecs": "testdata/dwi/dwi.bvecs",
     "bvals": "testdata/dwi/dwi.bvals",
     "t1":	"testdata/t1w/t1.nii.gz",
-    "count":	100000,
+    "count":	1000,
     "lmax":	8,
     "min_length":	10,
     "max_length":	200
