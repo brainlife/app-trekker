@@ -3,7 +3,7 @@
 #set -e
 #set -x
 
-NTHREADS=8
+NCORE=8
 
 mkdir -p track
 mkdir -p csd
@@ -152,7 +152,7 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
     -pathway_B=require_entry ./mask/gm.nii.gz \
     -minLength ${MINLENGTH} \
     -maxLength ${MAXLENGTH} \
-    -numberOfThreads ${NTHREADS} \
+    -numberOfThreads ${NCORE} \
     -output output.vtk
 
 # convert output vtk to tck
