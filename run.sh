@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -x
+#set -e
+#set -x
 
 NCORE=8
 
@@ -32,7 +32,7 @@ NUMFIBERS=`jq -r '.count' config.json`
 # extract b0 image from dwi
 [ ! -f b0.mif ] && dwiextract dwi.mif - -bzero | mrmath - mean b0.mif -axis 3 -nthreads $NCORE
 
-## check if b0 volume successfully created
+# check if b0 volume successfully created
 if [ ! -f b0.mif ]; then
     echo "No b-zero volumes present."
     NSHELL=`mrinfo -shell_bvalues dwi.mif | wc -w`
@@ -146,12 +146,13 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
 
 /trekker/build/bin/trekker \
     -fod ./csd/lmax${LMAX}.nii.gz \
-    -seed_image ./mask/gmwmi_seed.nii.gz \
+    -seed_image ./mask/wm.nii.gz \
     -seed_count ${COUNT} \
-    -pathway=discard_if_ends_inside ./mask/wm.nii.gz \
-    -pathway=discard_if_enters ./mask/csf.nii.gz \
+    -pathway_A=require_entry ./mask/gm.nii.gz \
+    -pathway_B=require_entry ./mask/gm.nii.gz \
     -minLength ${MINLENGTH} \
     -maxLength ${MAXLENGTH} \
+    -numberOfThreads ${NCORE} \
     -output output.vtk
 
 # convert output vtk to tck
