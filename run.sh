@@ -15,10 +15,10 @@ bvecs=`jq -r '.bvecs' config.json`
 bvals=`jq -r '.bvals' config.json`
 anat=`jq -r '.t1' config.json`
 LMAX=`jq -r '.lmax' config.json`
-COUNT=`jq -r '.count' config.json`
-MINLENGTH=`jq -r '.min_length' config.json`
-MAXLENGTH=`jq -r '.max_length' config.json`
-NUMFIBERS=`jq -r '.count' config.json`
+#NUMFIBERS=`jq -r '.count' config.json`
+
+MINFODAMP=$(jq -r .minfodamp config.json)
+minradiusofcurvature=$(jq -r .minradiusofcurvature config.json)
 
 # convert dwi to mrtrix format
 [ ! -f dwi.b ] && mrconvert -fslgrad $bvecs $bvals $dwi dwi.mif --export_grad_mrtrix dwi.b -nthreads $NCORE
@@ -147,12 +147,18 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
 /trekker/build/bin/trekker \
     -fod ./csd/lmax${LMAX}.nii.gz \
     -seed_image ./mask/wm.nii.gz \
-    -seed_count ${COUNT} \
+    -seed_count $(jq -r .count config.json) \
     -pathway_A=require_entry ./mask/gm.nii.gz \
     -pathway_B=require_entry ./mask/gm.nii.gz \
-    -minLength ${MINLENGTH} \
-    -maxLength ${MAXLENGTH} \
+    -minLength $(jq -r .min_length config.json) \
+    -maxLength $(jq -r .max_length config.json) \
     -numberOfThreads ${NCORE} \
+    -minFODamp $(jq -r .minfodamp config.json) \
+    -minRadiusOfCurvature $(jq -r .minradius config.json) \
+    -probeLength $(jq -r .probelength config.json) \
+    -stepSize $(jq -r .stepsize config.json) \
+    -writeColors \
+    -verboseLevel 0 \
     -output output.vtk
 
 # convert output vtk to tck
