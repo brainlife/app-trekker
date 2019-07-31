@@ -51,6 +51,7 @@ if [ $NSHELL -gt 1 ]; then
     echo "Multi-shell data: $NSHELL total shells"
 else
     echo "Single-shell data: $NSHELL shell"
+    MS=0
     if [ ! -z "$TENSOR_FIT" ]; then
 	echo "Ignoring requested tensor shell. All data will be fit and tracked on the same b-value."
     fi
