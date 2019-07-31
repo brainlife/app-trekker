@@ -151,6 +151,12 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
     -seed_count $(jq -r .count config.json) \
     -pathway_A=require_entry ./mask/gm.nii.gz \
     -pathway_B=require_entry ./mask/gm.nii.gz \
+    -pathway_A=require_exit ./mask/wm.nii.gz \
+    -pathway_B=require_exit ./mask/wm.nii.gz \
+    -pathway_A=discard_if_ends_inside ./mask/wm.nii.gz \
+    -pathway_B=discard_if_ends_inside ./mask/wm.nii.gz \
+    -pathway_A=discard_if_enters ./mask/csf.nii.gz \
+    -pathway_B=discard_if_enters ./mask/csf.nii.gz \
     -minLength $(jq -r .min_length config.json) \
     -maxLength $(jq -r .max_length config.json) \
     -numberOfThreads ${NCORE} \
