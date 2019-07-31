@@ -96,7 +96,7 @@ done
 [ ! -f 5ttvis.mif ] && 5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE
 
 #creating response (should take about 15min)
-if [ $MS ]; then
+if [ $MS -eq 0]; then
 	echo "Estimating CSD response function"
 	time dwi2response tournier dwi.mif wmt.txt -lmax ${LMAX} -force -nthreads $NCORE -tempdir ./tmp
 else
@@ -105,7 +105,7 @@ else
 fi
 
 # fitting CSD FOD of lmax
-if [ $MS ]; then
+if [ $MS -eq 0]; then
 	echo "Fitting CSD FOD of Lmax ${LMAX}..."
 	time dwi2fod -mask mask.mif csd dwi.mif wmt.txt wmt_lmax${LMAX}_fod.mif -lmax ${LMAX} -force -nthreads $NCORE
 else
