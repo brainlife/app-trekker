@@ -111,7 +111,7 @@ if [ $MS -eq 0 ]; then
 	time dwi2fod -mask mask.mif csd dwi.mif wmt.txt wmt_lmax${LMAX}_fod.mif -lmax ${LMAX} -force -nthreads $NCORE
 else
 	echo "Estimating MSMT CSD FOD of Lmax ${LMAX}"
-	time dwi2fod msmt_csd dwi.mif wmt.txt wmt_lmax${LMAX}_fod.mif  gmt.txt gmt_lmax${LMAX}_fod.mif csf.txt csf_lmax${LMAX}_fod.mif -force -nthreads $NCORE
+	time dwi2fod msmt_csd dwi.mif wmt.txt wmt_lmax${LMAX}_fod.mif  gmt.txt gmt_lmax${LMAX}_fod.mif csf.txt csf_lmax${LMAX}_fod.mif -mask mask.mif -lmax $LMAX,$LMAX,$LMAX -force -nthreads $NCORE
 fi
 
 # convert to niftis
