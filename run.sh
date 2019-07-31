@@ -47,7 +47,7 @@ fi
 
 ## determine single shell or multishell fit
 if [ $NSHELL -gt 1 ]; then
-    MS=yes
+    MS=1
     echo "Multi-shell data: $NSHELL total shells"
 else
     echo "Single-shell data: $NSHELL shell"
