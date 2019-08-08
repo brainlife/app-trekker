@@ -160,9 +160,9 @@ mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
     -stepSize $(jq -r .stepsize config.json) \
     -writeColors \
     -verboseLevel 0 \
+    -enableOutputOverwrite \
     -output output.vtk
 
-#-enableOutputOverwrite \
 
 # convert output vtk to tck
 tckconvert output.vtk track/track.tck -force -nthreads $NCORE
