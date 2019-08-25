@@ -16,6 +16,7 @@ bvals=`jq -r '.bvals' config.json`
 anat=`jq -r '.t1' config.json`
 LMAX=`jq -r '.lmax' config.json`
 input_csd=`jq -r "$(eval echo '.lmax$LMAX')" config.json`
+mask=`jq -r '.mask' config.json`
 #NUMFIBERS=`jq -r '.count' config.json`
 
 MINFODAMP=$(jq -r .minfodamp config.json)
@@ -84,18 +85,29 @@ done
 #[ ! -f fa.mif ] && tensor2metric -mask mask.mif -adc md.mif -fa fa.mif -ad ad.mif -rd rd.mif -cl cl.mif -cp cp.mif -cs cs.mif dt.mif -force -nthreads $NCORE
 
 # generate 5-tissue-type (5TT) tracking mask
-[ ! -f 5tt.mif ] && 5ttgen fsl anat.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force -nthreads $NCORE
+if [[ ${mask} == 'null' ]]; then
+	[ ! -f 5tt.mif ] && 5ttgen fsl anat.mif 5tt.mif -nocrop -sgm_amyg_hipp -tempdir ./tmp -force -nthreads $NCORE
 
-# generate gm-wm interface seed mask
-[ ! -f gmwmi_seed.mif ] && 5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE
+	# generate gm-wm interface seed mask
+	[ ! -f gmwmi_seed.mif ] && 5tt2gmwmi 5tt.mif gmwmi_seed.mif -force -nthreads $NCORE
 
-# generate csf,gm,wm masks
-[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
-[ ! -f gm.mif ] && mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
-[ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
+	# generate csf,gm,wm masks
+	[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
+	[ ! -f gm.mif ] && mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
+	[ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
 
-# create visualization output
-[ ! -f 5ttvis.mif ] && 5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE
+	# create visualization output
+	[ ! -f 5ttvis.mif ] && 5tt2vis 5tt.mif 5ttvis.mif -force -nthreads $NCORE
+else
+	echo "5tt masks inputted. converting to mrtrix format"
+        mrconvert ${mask}/output/5tt.nii.gz -stride 1,2,3,4 5tt.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/gmwmi_seed.nii.gz -stride 1,2,3,4 gmwmi_seed.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/gm.nii.gz -stride 1,2,3,4 gm.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/wm.nii.gz -stride 1,2,3,4 wm.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/csf.nii.gz -stride 1,2,3,4 csf.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/mask.nii.gz -stride 1,2,3,4 mask.mif -force -nthreads $NCORE
+        mrconvert ${mask}/output/5ttvis.nii.gz -stride 1,2,3,4 5ttvis.mif -force -nthreads $NCORE
+fi
 
 #creating response (should take about 15min)
 if [[ ${input_csd} == 'null' ]]; then
