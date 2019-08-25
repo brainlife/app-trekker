@@ -124,12 +124,6 @@ else
 	cp -v ${input_csd} ./csd/lmax${LMAX}.nii.gz
 fi
 
-# convert to niftis
-mrconvert wmt_lmax${LMAX}_fod.mif -stride 1,2,3,4 ./csd/lmax${LMAX}.nii.gz -force -nthreads $NCORE
-
-# copy response file
-cp wmt.txt response.txt
-
 ## tensor outputs
 #mrconvert fa.mif -stride 1,2,3,4 ./tensor/fa.nii.gz -force -nthreads $NCORE
 #mrconvert md.mif -stride 1,2,3,4 ./tensor/md.nii.gz -force -nthreads $NCORE
