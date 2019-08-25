@@ -8,6 +8,7 @@ NCORE=8
 mkdir -p track
 mkdir -p csd
 mkdir -p mask
+mkdir -p mask/output
 
 dwi=$(jq -r .dwi config.json)
 bvecs=`jq -r '.bvecs' config.json`
@@ -139,22 +140,22 @@ fi
 #mrconvert dt.mif -stride 1,2,3,4 ./tensor/tensor.nii.gz -force -nthreads $NCORE
 
 ## 5 tissue type visualization
-mrconvert 5ttvis.mif -stride 1,2,3,4 ./mask/5ttvis.nii.gz -force -nthreads $NCORE
-mrconvert 5tt.mif -stride 1,2,3,4 ./mask/5tt.nii.gz -force -nthreads $NCORE
-mrconvert gmwmi_seed.mif -stride 1,2,3,4 ./mask/gmwmi_seed.nii.gz -force -nthreads $NCORE
+mrconvert 5ttvis.mif -stride 1,2,3,4 ./mask/output//5ttvis.nii.gz -force -nthreads $NCORE
+mrconvert 5tt.mif -stride 1,2,3,4 ./mask/output/5tt.nii.gz -force -nthreads $NCORE
+mrconvert gmwmi_seed.mif -stride 1,2,3,4 ./mask/output/gmwmi_seed.nii.gz -force -nthreads $NCORE
 
 # masks
-mrconvert gm.mif -stride 1,2,3,4 ./mask/gm.nii.gz -force -nthreads $NCORE
-mrconvert csf.mif -stride 1,2,3,4 ./mask/csf.nii.gz -force -nthreads $NCORE
-mrconvert wm.mif -stride 1,2,3,4 ./mask/wm.nii.gz -force -nthreads $NCORE
-mrconvert mask.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
+mrconvert gm.mif -stride 1,2,3,4 ./mask/output/gm.nii.gz -force -nthreads $NCORE
+mrconvert csf.mif -stride 1,2,3,4 ./mask/output/csf.nii.gz -force -nthreads $NCORE
+mrconvert wm.mif -stride 1,2,3,4 ./mask/output/wm.nii.gz -force -nthreads $NCORE
+mrconvert mask.mif -stride 1,2,3,4 ./mask/output/mask.nii.gz -force -nthreads $NCORE
 
 /trekker/build/bin/trekker \
     -fod ./csd/lmax${LMAX}.nii.gz \
-    -seed_image ./mask/wm.nii.gz \
+    -seed_image ./mask/output/wm.nii.gz \
     -seed_count $(jq -r .count config.json) \
-    -pathway_A=require_entry ./mask/gm.nii.gz \
-    -pathway_B=require_entry ./mask/gm.nii.gz \
+    -pathway_A=require_entry ./mask/output/gm.nii.gz \
+    -pathway_B=require_entry ./mask/output/gm.nii.gz \
     -minLength $(jq -r .min_length config.json) \
     -maxLength $(jq -r .max_length config.json) \
     -numberOfThreads ${NCORE} \
