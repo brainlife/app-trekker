@@ -28,6 +28,7 @@ probeLength=`jq -r '.probelength' config.json`
 probeQuality=`jq -r '.probequality' config.json`
 probeRadius=`jq -r '.proberadius' config.json`
 probeCount=`jq -r '.probecount' config.json`
+step_size=`jq -r '.step_size' config.json`
 single_lmax=`jq -r '.single_lmax' config.json`
 
 # convert anatomical t1 to mrtrix format
@@ -54,12 +55,12 @@ fi
 [ ! -f csf_bin.nii.gz ] && mrconvert csf.mif -stride 1,2,3,4 csf.nii.gz -force -nthreads $NCORE && fslmaths csf.nii.gz -thr 0.5 -bin csf_bin.nii.gz
 
 # convert white matter mask
-if [[ ${white_matter_mask} == "null" ]]; then
+if [[ ${wm_mask} == "null" ]]; then
 
 	[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
 	[ ! -f wm.nii.gz ] && mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE
 else
-	cp ${white_matter_mask} wm.nii.gz
+	cp ${wm_mask} wm.nii.gz
 fi
 
 # convert 5tt mask to output
