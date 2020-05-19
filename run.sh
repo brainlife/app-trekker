@@ -64,7 +64,7 @@ else
 fi
 
 # convert 5tt mask to output
-[ ! -f ./5tt/mask.nii.gz ] && mrconvert 5tt.mif -stride 1,2,3,4 ./5tt/mask.nii.gz -force -nthreads $NCORE
+[ ! -f ./mask/mask.nii.gz ] && mrconvert 5tt.mif -stride 1,2,3,4 ./mask/mask.nii.gz -force -nthreads $NCORE
 
 # tracking
 for LMAXS in ${lmaxs}; do
