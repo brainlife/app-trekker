@@ -51,6 +51,8 @@ fi
 
 # generate csf,gm,wm masks
 [ ! -f gm.mif ] && mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
+[ ! -f gm_bin.nii.gz ] && mrconvert gm.mif -stride 1,2,3,4 gm.nii.gz -force -nthreads $NCORE && fslmaths gm.nii.gz -bin gm.nii.gz
+
 [ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
 [ ! -f csf_bin.nii.gz ] && mrconvert csf.mif -stride 1,2,3,4 csf.nii.gz -force -nthreads $NCORE && fslmaths csf.nii.gz -thr 0.5 -bin csf_bin.nii.gz
 
@@ -58,7 +60,7 @@ fi
 if [[ ${wm_mask} == "null" ]]; then
 
 	[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
-	[ ! -f wm.nii.gz ] && mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE
+	[ ! -f wm.nii.gz ] && mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE && fslmaths wm.nii.gz -bin wm.nii.gz
 else
 	cp ${wm_mask} wm.nii.gz
 fi
@@ -78,29 +80,30 @@ for LMAXS in ${lmaxs}; do
 				echo "FOD amplitude ${FOD}"
 				if [ ! -f track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk ]; then
 					/trekker/build/bin/trekker \
-    					-fod ${input_csd} \
-    					-seed_image ./wm.nii.gz \
-    					-seed_count ${count} \
-    					-pathway_A=require_entry ./gm.nii.gz \
-    					-pathway_B=require_entry ./gm.nii.gz \
+						-fod ${input_csd} \
+						-seed_image ./wm.nii.gz \
+						-seed_count ${count} \
+						-pathway_A=require_entry ./gm.nii.gz \
+						-pathway_B=require_entry ./gm.nii.gz \
 						-pathway_A=discard_if_enters ./csf_bin.nii.gz \
 						-pathway_B=discard_if_enters ./csf_bin.nii.gz \
-    					-minLength ${minLength} \
-    					-maxLength ${maxLength} \
-    					-numberOfThreads ${NCORE} \
-    					-minFODamp ${FOD} \
-    					-minRadiusOfCurvature ${CURV} \
-    					-probeLength ${probeLength} \
+						-minLength ${minLength} \
+						-maxLength ${maxLength} \
+						-numberOfThreads ${NCORE} \
+						-minFODamp ${FOD} \
+						-minRadiusOfCurvature ${CURV} \
+						-probeLength ${probeLength} \
 						-probeQuality ${probeQuality} \
 						-probeRadius ${probeRadius} \
 						-probeCount ${probeCount} \
-    					-stepSize ${STEP} \
-    					-writeColors \
-    					-verboseLevel 0 \
-    					-enableOutputOverwrite \
-    					-output track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk
-						# convert output vtk to tck
-						tckconvert track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.tck
+						-stepSize ${STEP} \
+						-writeColors \
+						-verboseLevel 0 \
+						-enableOutputOverwrite \
+						-output track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk
+
+					# convert output vtk to tck
+					tckconvert track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.tck
 				fi
 			done
 		done
@@ -109,7 +112,7 @@ done
 
 # merge outputs
 holder=(track*.tck)
-if [ ${#holder[@]} == 1]; then
+if [ ${#holder[@]} == 1 ]; then
 	cp ${holder[0]} ./track/track.tck
 else
 	tckedit ${holder[*]} ./track/track.tck
