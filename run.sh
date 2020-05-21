@@ -98,7 +98,7 @@ for LMAXS in ${lmaxs}; do
 						-probeCount ${probeCount} \
 						-stepSize ${STEP} \
 						-writeColors \
-						-verboseLevel 1 \
+						-verboseLevel 0 \
 						-enableOutputOverwrite \
 						-output track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk
 
