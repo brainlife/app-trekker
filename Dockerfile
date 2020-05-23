@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y python3-pip python3 cmake g++ git
 #extras
 RUN apt-get install -y jq vim
 
-RUN pip3 install Cython
+RUN pip3 install Cython scipy dipy numpy nibabel
 
 #compile / install trekker
 RUN git clone https://github.com/baranaydogan/trekker -b memoryworkout /trekker
