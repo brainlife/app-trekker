@@ -8,12 +8,12 @@ import trekkerIO
 
 def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,max_length,max_sampling,seed_max_trials,probe_length,probe_quality,probe_radius,probe_count,best_at_init):
 	
-    # initialize FOD
-    FOD = FOD_path[-9:-7].decode()
-    if FOD[0] == 'x':
-        FOD =  FOD_path[-8:-7].decode()
+	# initialize FOD
+	FOD = FOD_path[-9:-7].decode()
+	if FOD[0] == 'x':
+	    FOD =  FOD_path[-8:-7].decode()
 
-    mytrekker=Trekker.initialize(FOD_path)
+	mytrekker=Trekker.initialize(FOD_path)
 
 	# set white matter as seed
 	seed = b"wm_bin.nii.gz"
@@ -61,7 +61,7 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 				mytrekker.minFODamp(amps)
 				
 				if probe_length == 'default':
-                    mytrekker.probeLength(amps)
+	                mytrekker.probeLength(amps)
 
 			else:
 				amps = 'default'
