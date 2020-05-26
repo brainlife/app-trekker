@@ -53,47 +53,47 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 	# resource-specific parameter
 	mytrekker.numberOfThreads(8)
 
-		# begin looping tracking
-		for amps in min_fod_amp:
-			if min_fod_amp != ['default']:
-				print(amps)
-				amps = float(amps)
-				mytrekker.minFODamp(amps)
-				
-				if probe_length == 'default':
-	                mytrekker.probeLength(amps)
+	# begin looping tracking
+	for amps in min_fod_amp:
+		if min_fod_amp != ['default']:
+			print(amps)
+			amps = float(amps)
+			mytrekker.minFODamp(amps)
 
+			if probe_length == 'default':
+				mytrekker.probeLength(amps)
+
+		else:
+			amps = 'default'
+
+		for curvs in curvatures:
+			if curvatures != ['default']:
+				print(curvs)
+				curvs = float(curvs)
+				mytrekker.minRadiusOfCurvature(curvs)
 			else:
-				amps = 'default'
+				curvs = 'default'
 
-			for curvs in curvatures:
-				if curvatures != ['default']:
-					print(curvs)
-					curvs = float(curvs)
-					mytrekker.minRadiusOfCurvature(curvs)
+			for step in step_size:
+				if step_size != ['default']:
+					print(step)
+					step = float(step)
+					mytrekker.stepSize(step)
 				else:
-					curvs = 'default'
+					step = 'default'
 
-				for step in step_size:
-					if step_size != ['default']:
-						print(step)
-						step = float(step)
-						mytrekker.stepSize(step)
-					else:
-						step = 'default'
-					
-					mytrekker.printParameters()
-					output_name = 'track_lmax%s_FOD%s_curv%s_step%s.vtk' %(srt(FOD),str(amps),str(curvs),str(step))
+				mytrekker.printParameters()
+				output_name = 'track_lmax%s_FOD%s_curv%s_step%s.vtk' %(srt(FOD),str(amps),str(curvs),str(step))
 
-					# run the tracking
-					Streamlines = mytrekker.run()
+				# run the tracking
+				Streamlines = mytrekker.run()
 
-		# print output
-		tractogram = trekkerIO.Tractogram()
-		tractogram.count = len(Streamlines)
-		print(tractogram.count)
-		tractogram.points = Streamlines
-		trekkerIO.write(tractogram,output_name)
+				# print output
+				tractogram = trekkerIO.Tractogram()
+				tractogram.count = len(Streamlines)
+				print(tractogram.count)
+				tractogram.points = Streamlines
+				trekkerIO.write(tractogram,output_name)
 
 	del mytrekker
 
