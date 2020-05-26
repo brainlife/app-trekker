@@ -83,7 +83,7 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 					step = 'default'
 
 				mytrekker.printParameters()
-				output_name = 'track_lmax%s_FOD%s_curv%s_step%s.vtk' %(srt(FOD),str(amps),str(curvs),str(step))
+				output_name = 'track_lmax%s_FOD%s_curv%s_step%s.vtk' %(str(FOD),str(amps),str(curvs),str(step))
 
 				# run the tracking
 				Streamlines = mytrekker.run()
