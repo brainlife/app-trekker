@@ -26,8 +26,10 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 	csf = b"csf_bin.nii.gz"
 
 	# set include and exclude definitions
-	mytrekker.pathway_discard_if_enters(csf)
-	mytrekker.pathway_require_entry(gm)
+	mytrekker.pathway_A_discard_if_enters(csf)
+	mytrekker.pathway_B_discard_if_enters(csf)
+	mytrekker.pathway_A_require_entry(gm)
+	mytrekker.pathway_B_require_entry(gm)
 
 	# set non loopable parameters
 	# required parameters
