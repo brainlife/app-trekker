@@ -17,4 +17,4 @@ RUN git clone https://github.com/baranaydogan/trekker /trekker
 RUN mkdir -p /trekker/build/Linux && cd /trekker/build/Linux && cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DBuild_Python3_WRAPPER=ON -DPython3_EXECUTABLE=python3 ../../
 RUN cd /trekker/build/Linux && cmake --build . --config Release --target install --parallel 8
 
-RUN pip3 install /trekker/build/Linux/install/python/dist/Trekker-0.5-cp38-cp38-linux_x86_64.whl
+RUN pip3 install /trekker/build/Linux/install/python/dist/Trekker-0.6-cp38-cp38-linux_x86_64.whl
