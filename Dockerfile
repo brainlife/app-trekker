@@ -13,7 +13,7 @@ RUN apt-get install -y jq vim
 RUN pip3 install Cython scipy dipy numpy nibabel
 
 #compile / install trekker
-RUN git clone https://github.com/baranaydogan/trekker -b memoryworkout /trekker
+RUN git clone https://github.com/baranaydogan/trekker /trekker
 RUN mkdir -p /trekker/build/Linux && cd /trekker/build/Linux && cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release -DBuild_Python3_WRAPPER=ON -DPython3_EXECUTABLE=python3 ../../
 RUN cd /trekker/build/Linux && cmake --build . --config Release --target install --parallel 8
 
