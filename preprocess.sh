@@ -48,6 +48,9 @@ fi
 ## generate csf,gm,wm masks
 [ ! -f gm.mif ] && mrconvert -coord 3 0 5tt.mif gm.mif -force -nthreads $NCORE
 [ ! -f gm_bin.nii.gz ] && mrconvert gm.mif -stride 1,2,3,4 gm.nii.gz -force -nthreads $NCORE && fslmaths gm.nii.gz -thr 0.5 -bin gm_bin.nii.gz
+[ ! -f subcort.mif ] && mrconvert -coord 3 1 5tt.mif subcort.mif -force -nthreads $NCORE
+[ ! -f cortex.mif ] && mrcalc gm.mif subcort.mif -add  cortex.mif -force -nthreads $NCORE
+[ ! -f cortex_bin.nii.gz ] && mrconvert cortex.mif -stride 1,2,3,4 cortex.nii.gz -force -nthreads $NCORE && fslmaths cortex.nii.gz -thr 0.5 -bin cortex_bin.nii.gz
 [ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
 [ ! -f csf_bin.nii.gz ] && mrconvert csf.mif -stride 1,2,3,4 csf.nii.gz -force -nthreads $NCORE && fslmaths csf.nii.gz -thr 0.3 -bin csf_bin.nii.gz
 [ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE

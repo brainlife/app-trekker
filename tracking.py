@@ -20,7 +20,7 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 	mytrekker.seed_image(seed)
 
 	# set gray matter
-	gm = b"gm_bin.nii.gz"
+	gm = b"cortex_bin.nii.gz"
 
 	# set csf
 	csf = b"csf_bin.nii.gz"
