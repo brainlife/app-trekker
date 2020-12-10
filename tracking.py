@@ -136,7 +136,7 @@ def tracking():
 
 	else:
 
-		for csd in range(2,max_lmax,2):
+		for csd in range(2,max_lmax+2,2):
 			FOD_path = eval('lmax%s' %str(csd)).encode()
 			
 			trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,max_length,max_sampling,seed_max_trials,probe_length,probe_quality,probe_radius,probe_count,best_at_init)
