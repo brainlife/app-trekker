@@ -16,3 +16,11 @@ else
 fi
 tckinfo $output > ./track/track_info.txt
 
+# clean up
+if [ -f ./track/track.tck ]; then
+	rm -rf *.mif *.b* ./tmp *.nii.gz*
+else
+	echo "tracking failed"
+	exit 1;
+fi
+

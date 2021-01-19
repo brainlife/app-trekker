@@ -114,28 +114,28 @@ for LMAXS in ${lmaxs}; do
 						-output track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk
 
 					# convert output vtk to tck
-					tckconvert track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.tck
+					# tckconvert track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.tck
 				fi
 			done
 		done
 	done
 done
 
-# merge outputs
-holder=(track*.tck)
-if [ ${#holder[@]} == 1 ]; then
-	cp ${holder[0]} ./track/track.tck
-else
-	tckedit ${holder[*]} ./track/track.tck
-fi
+# # merge outputs
+# holder=(track*.tck)
+# if [ ${#holder[@]} == 1 ]; then
+# 	cp ${holder[0]} ./track/track.tck
+# else
+# 	tckedit ${holder[*]} ./track/track.tck
+# fi
 
-# use output.json as product.Json
-tckinfo ./track/track.tck > product.json
+# # use output.json as product.Json
+# tckinfo ./track/track.tck > product.json
 
-# clean up
-if [ -f ./track/track.tck ]; then
-	rm -rf *.mif *.b* ./tmp *.nii.gz*
-else
-	echo "tracking failed"
-	exit 1;
-fi
+# # clean up
+# if [ -f ./track/track.tck ]; then
+# 	rm -rf *.mif *.b* ./tmp *.nii.gz*
+# else
+# 	echo "tracking failed"
+# 	exit 1;
+# fi
