@@ -45,7 +45,7 @@ fi
 # convert white matter mask
 if [[ ${wm_mask} == "null" ]]; then
 	[ ! -f wm.mif ] && mrconvert -coord 3 2 5tt.mif wm.mif -force -nthreads $NCORE
-	[ ! -f wm_bin.nii.gz ] && mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE && fslmaths wm.nii.gz -bin wm.nii.gz
+	[ ! -f wm_bin.nii.gz ] && mrconvert wm.mif -stride 1,2,3,4 wm.nii.gz -force -nthreads $NCORE && fslmaths wm.nii.gz -bin wm_bin.nii.gz
 else
 	cp ${wm_mask} wm_bin.nii.gz
 fi

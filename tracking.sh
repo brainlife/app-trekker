@@ -91,7 +91,7 @@ for LMAXS in ${lmaxs}; do
 					/trekker/build/Linux/install/bin/trekker \
 						-algorithm ptt_with_parameter_priors \
 						-fod ${input_csd} \
-						-seed_image ./wm.nii.gz \
+						-seed_image ./wm_bin.nii.gz \
 						-seed_count ${count} \
 						-dispersionImage ./odi.nii.gz \
 						-pathway_A=require_entry ./gm.nii.gz \
