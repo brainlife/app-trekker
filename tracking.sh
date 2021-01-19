@@ -35,6 +35,30 @@ else
 fi
 
 # tracking
+if [ ${probeLength} == 'default' ]; then
+	probelength_line=""
+else
+	probelength_line="-probeLength ${probeLength}"
+fi
+
+if [ ${probeQuality} == 'default' ]; then
+	probequality_line=""
+else
+	probequality_line="-probeQuality ${probeQuality}"
+fi
+
+if [ ${probeRadius} == 'default' ]; then
+	proberadius_line=""
+else
+	proberadius_line="-probeRadius ${probeRadius}"
+fi
+
+if [ ${probeCount} == 'default' ]; then
+	probecount_line=""
+else
+	probecount_line="-probeCount ${probeCount}"
+fi
+
 for LMAXS in ${lmaxs}; do
 	input_csd=$(eval "echo \$lmax${LMAXS}")
 	echo "running trekker tracking on lmax ${LMAXS}"
@@ -64,7 +88,7 @@ for LMAXS in ${lmaxs}; do
 				fi
 
 				if [ ! -f track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk ]; then
-					/trekker/build/bin/trekker \
+					/trekker/build/Linux/install/bin/trekker \
 						-algorithm ptt_with_parameter_priors \
 						-fod ${input_csd} \
 						-seed_image ./wm.nii.gz \
@@ -79,10 +103,10 @@ for LMAXS in ${lmaxs}; do
 						-numberOfThreads ${NCORE} \
 						${amp_line} \
 						${curv_line} \
-						-probeLength ${probeLength} \
-						-probeQuality ${probeQuality} \
-						-probeRadius ${probeRadius} \
-						-probeCount ${probeCount} \
+						${probelength_line} \
+						${probequality_line} \
+						${proberadius_line} \
+						${probecount_line} \
 						${step_line} \
 						-writeColors \
 						-verboseLevel 0 \
