@@ -17,14 +17,14 @@ lmax12=`jq -r '.lmax12' config.json`
 lmax14=`jq -r '.lmax14' config.json`
 count=`jq -r '.count' config.json`
 minFODamp=`jq -r '.minfodamp' config.json`
-curvatures=`jq -r '.minradius' config.json`
+curvatures=`jq -r '.curvatures' config.json`
 minLength=`jq -r '.min_length' config.json`
 maxLength=`jq -r '.max_length' config.json`
 probeLength=`jq -r '.probelength' config.json`
 probeQuality=`jq -r '.probequality' config.json`
 probeRadius=`jq -r '.proberadius' config.json`
 probeCount=`jq -r '.probecount' config.json`
-step_size=`jq -r '.step_size' config.json`
+step_size=`jq -r '.stepsize' config.json`
 single_lmax=`jq -r '.single_lmax' config.json`
 
 # generate sequence of lmax spherical harmonic order for single or ensemble
