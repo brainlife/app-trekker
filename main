@@ -9,11 +9,12 @@ if [ ! -f csf_bin.nii.gz ]; then
 	time singularity exec -e docker://brainlife/mrtrix3:3.0.0 ./preprocess.sh
 fi
 
-time singularity exec -e docker://brainlife/trekker:0.6 ./tracking.py
+# time singularity exec -e docker://brainlife/trekker:0.6 ./tracking.py
+time singularity exec -e docker://brainlife/trekker:0.7-bash ./tracking.sh
 
-if [ ! -f ./track/track.tck ]; then
-	time singularity exec -e docker://brainlife/mrtrix3:3.0.0 ./convert.sh
-fi
+# if [ ! -f ./track/track.tck ]; then
+# 	time singularity exec -e docker://brainlife/mrtrix3:3.0.0 ./convert.sh
+# fi
 
 if [ -f ./track/track.tck ]; then
 	echo "complete"

@@ -25,6 +25,9 @@ def trekker_tracking(FOD_path,count,min_fod_amp,curvatures,step_size,min_length,
 	# set csf
 	csf = b"csf_bin.nii.gz"
 
+	# set odi
+	odi = b"odi.nii.gz"
+
 	# set include and exclude definitions
 	mytrekker.pathway_A_discard_if_enters(csf)
 	mytrekker.pathway_B_discard_if_enters(csf)
