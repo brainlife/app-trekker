@@ -15,7 +15,6 @@ bvecs=`jq -r '.bvecs' config.json`
 bvals=`jq -r '.bvals' config.json`
 mask=`jq -r '.mask' config.json`
 wm_mask=`jq -r '.wm_mask' config.json`
-odi=`jq -r '.odi' config.json`
 
 # parse whether dtiinit or dwi input
 if [[ ! ${dtiinit} == "null" ]]; then
@@ -58,6 +57,3 @@ fi
 [ ! -f cortex_bin.nii.gz ] && mrconvert cortex.mif -stride 1,2,3,4 cortex.nii.gz -force -nthreads $NCORE && fslmaths cortex.nii.gz -thr 0.5 -bin cortex_bin.nii.gz
 [ ! -f csf.mif ] && mrconvert -coord 3 3 5tt.mif csf.mif -force -nthreads $NCORE
 [ ! -f csf_bin.nii.gz ] && mrconvert csf.mif -stride 1,2,3,4 csf.nii.gz -force -nthreads $NCORE && fslmaths csf.nii.gz -thr 0.3 -bin csf_bin.nii.gz
-
-## copy odi
-[ ! -f odi.nii.gz ] && cp ${odi} ./odi.nii.gz
