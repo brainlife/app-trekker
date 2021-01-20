@@ -89,11 +89,9 @@ for LMAXS in ${lmaxs}; do
 
 				if [ ! -f track_lmax${LMAXS}_curv${CURV}_step${STEP}_amp${FOD}.vtk ]; then
 					/trekker/build/Linux/install/bin/trekker \
-						-algorithm ptt_with_parameter_priors \
 						-fod ${input_csd} \
 						-seed_image ./wm_bin.nii.gz \
 						-seed_count ${count} \
-						-dispersionImage ./odi.nii.gz \
 						-pathway_A=require_entry ./gm.nii.gz \
 						-pathway_B=require_entry ./gm.nii.gz \
 						-pathway_A=discard_if_enters ./csf_bin.nii.gz \
