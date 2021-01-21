@@ -94,8 +94,8 @@ for LMAXS in ${lmaxs}; do
 						-seed_image ./wm_bin.nii.gz \
 						-seed_count ${count} \
 						-dispersionImage ./odi.nii.gz \
-						-pathway_A=require_entry ./gm.nii.gz \
-						-pathway_B=require_entry ./gm.nii.gz \
+						-pathway_A=require_entry ./gm_bin.nii.gz \
+						-pathway_B=require_entry ./gm_bin.nii.gz \
 						-pathway_A=discard_if_enters ./csf_bin.nii.gz \
 						-pathway_B=discard_if_enters ./csf_bin.nii.gz \
 						-minLength ${minLength} \
