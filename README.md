@@ -10,11 +10,11 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="MIT license"></a>
 </p>
 
-> 📍 **This branch, `v.1.2`, is the brainlife.io App Trekker** ([doi:10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356)). The other Apps in this repository are listed under **Versions on brainlife.io** below.
+> **This branch, `v.1.2`, is the brainlife.io App Trekker** ([doi:10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356)). The other Apps in this repository are listed under **Versions on brainlife.io** below.
 
 This App wraps [Trekker](https://github.com/dmritrekker/trekker), developed by Dogu Baran Aydogan, so that it can be run on brainlife.io. All credit for the tracking algorithm belongs to its author.
 
-## 🧠 At a glance
+## At a glance
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
@@ -24,13 +24,13 @@ Builds grey-matter, white-matter and CSF masks from the 5TT input with MRtrix3, 
 
 | | |
 |---|---|
-| 📥 **Inputs** | `neuro/dwi` · `neuro/csd` · `neuro/mask` |
-| 📤 **Outputs** | `neuro/track/tck` · `neuro/mask` |
-| 🐳 **Container** | `brainlife/mrtrix3:3.0.0` |
-| ⚙️ **Resources** | 8 CPUs · 40 GB memory · 36 h walltime |
-| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356) |
+| **Inputs** | `neuro/dwi` · `neuro/csd` · `neuro/mask` |
+| **Outputs** | `neuro/track/tck` · `neuro/mask` |
+| **Container** | `brainlife/mrtrix3:3.0.0` |
+| **Resources** | 8 CPUs · 40 GB memory · 36 h walltime |
+| **Run it** | [doi.org/10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356) |
 
-#### 📥 Inputs
+#### Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Builds grey-matter, white-matter and CSF masks from the 5TT input with MRtrix3, 
 | `csd` | `neuro/csd` | yes | CSD fibre orientation distributions at one or more lmax values. Must include the lmax used by tracking (lmax parameter, or every lmax up to it when single_lmax is false). |
 | `mask` | `neuro/mask` (5tt_masks) | yes | 5 tissue type mask |
 
-#### 📤 Outputs
+#### Outputs
 
 | Output | Datatype | Description |
 |---|---|---|
@@ -46,7 +46,7 @@ Builds grey-matter, white-matter and CSF masks from the 5TT input with MRtrix3, 
 | `mask` | `neuro/mask` |  |
 
 <details>
-<summary><b>⚙️ Parameters</b> (15)</summary>
+<summary><b>Parameters</b> (15)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -70,7 +70,7 @@ Builds grey-matter, white-matter and CSF masks from the 5TT input with MRtrix3, 
 
 <!-- brainlife-app:end -->
 
-## 🏷️ Versions on brainlife.io
+## Versions on brainlife.io
 
 Each version is a separate App on brainlife.io, built from its own branch of this repository.
 
@@ -79,7 +79,7 @@ Each version is a separate App on brainlife.io, built from its own branch of thi
 | **Trekker** (this branch) | 0.6 | [`v.1.2`](https://github.com/brainlife/app-trekker/tree/v.1.2) | [doi:10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356) | current |
 | Trekker - v1.0 | 0.4 | [`v1.0`](https://github.com/brainlife/app-trekker/tree/v1.0) | [doi:10.25663/brainlife.app.214](https://doi.org/10.25663/brainlife.app.214) | deprecated |
 
-## 🔬 How it works
+## How it works
 
 The App builds grey matter, white matter and CSF masks from the five-tissue-type (5TT) input with MRtrix3, then runs Trekker seeded in white matter, keeping only streamlines whose two ends reach grey matter and discarding those that enter CSF. A brain mask is computed with `dwi2mask`.
 
@@ -87,13 +87,13 @@ Many parameters are exposed to shape tractography: the maximum spherical harmoni
 
 Trekker-specific options (probe length, quality, count and radius, maximum sampling per step, maximum trials per seed, best direction at initialisation) are advanced options; leave them at `default` to use Trekker's own defaults. See the [Trekker documentation](https://dmritrekker.github.io) for how they affect tracking.
 
-## 🚀 Running the App
+## Running the App
 
-### ☁️ On brainlife.io
+### On brainlife.io
 
 Open the App at [doi.org/10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356), choose a `neuro/dwi` dataset, its `neuro/csd` fibre orientation distributions and a `neuro/mask` with the `5tt_masks` tag, set the parameters and press **Execute**. The tractogram is archived to your project as a `neuro/track/tck` dataset that can be fed to white matter segmentation Apps.
 
-### 💻 Locally
+### Locally
 
 You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqlang.github.io/jq/). `main` runs the preprocessing and conversion steps in `brainlife/mrtrix3:3.0.0` and the tracking in `brainlife/trekker:0.6`.
 
@@ -142,7 +142,7 @@ You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqla
    ./main
    ```
 
-## 📦 Outputs
+## Outputs
 
 ```text
 track/
@@ -152,12 +152,12 @@ brainmask/
 └── mask.nii.gz      brain mask used for tracking
 ```
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 - **`tracking failed`**: no `track/track.tck` was produced. Check the log; a common cause is that the CSD input does not contain the requested `lmax`.
 - **Ensemble across lmax**: with `single_lmax` false, the code tracks on each even lmax from 2 up to, but not including, `lmax` (`range(2, lmax, 2)` in `tracking.py`), so every one of those CSD files must be present.
 
-## 📚 Citing
+## Citing
 
 > [!TIP]
 > If you use this App in your work, please cite the App, the software it builds on and brainlife.io (below). GitHub's **Cite this repository** button gives the App citation in APA and BibTeX.
@@ -169,7 +169,7 @@ brainmask/
 - Hayashi S, Caron BA, Heinsfeld AS, et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. *Nature Methods* 21:809–813 (2024). [doi:10.1038/s41592-024-02237-2](https://doi.org/10.1038/s41592-024-02237-2)
 - Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. *Scientific Data* 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
 
-## 👥 Authors
+## Authors
 
 - Brad Caron
 - Dogu Baran Aydogan (author of Trekker)
@@ -177,7 +177,7 @@ brainmask/
 
 **Contributors:** Soichi Hayashi
 
-## 💰 Funding
+## Funding
 
 [![Wellcome-226486/Z/22/Z](https://img.shields.io/badge/Wellcome-226486%2FZ%2F22%2FZ-purple.svg)](https://wellcome.org/)
 [![NIH-NINDS-U24NS140384](https://img.shields.io/badge/NIH_NINDS-U24NS140384-green.svg)](https://reporter.nih.gov/project-details/11261037)
@@ -196,6 +196,6 @@ brainmask/
 
 <sub>brainlife.io is publicly funded, and acknowledging that support helps keep it running. This App was developed with support from Wellcome, the U.S. National Institutes of Health (including the BRAIN Initiative BRAIN CONNECTS program: The Axonal Projectome EXchange, U24NS140384, and the Center for Mesoscale Connectomics, UM1NS132207) and the U.S. National Science Foundation.</sub>
 
-## ⚖️ License
+## License
 
 [MIT](LICENSE). Trekker is distributed under its own licence; see the [Trekker repository](https://github.com/dmritrekker/trekker).
