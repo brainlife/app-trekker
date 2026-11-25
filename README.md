@@ -16,11 +16,19 @@ This App wraps [Trekker](https://github.com/dmritrekker/trekker), developed by D
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
-**Tracks whole-brain streamlines with Trekker parallel transport probabilistic tractography on CSD FODs, constrained by a 5-tissue-type mask, and outputs a .tck tractogram.**
+> **Tracks whole-brain streamlines with Trekker parallel transport probabilistic tractography on CSD FODs, constrained by a 5-tissue-type mask, and outputs a .tck tractogram.**
 
 Builds grey-matter, white-matter and CSF masks from the 5TT input with MRtrix3, then runs Trekker seeded in white matter, requiring both ends to reach grey matter and discarding streamlines entering CSF, over every requested lmax, minimum FOD amplitude, curvature radius and step size; all runs are converted and merged into one track.tck. Use it for anatomically constrained ensemble tractography with fine control of Trekker's probe parameters. A brain mask is computed with dwi2mask when not provided.
 
-Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356)
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/dwi` · `neuro/csd` · `neuro/mask` |
+| 📤 **Outputs** | `neuro/track/tck` · `neuro/mask` |
+| 🐳 **Container** | `brainlife/mrtrix3:3.0.0` |
+| ⚙️ **Resources** | 8 CPUs · 40 GB memory · 36 h walltime |
+| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.356](https://doi.org/10.25663/brainlife.app.356) |
+
+#### 📥 Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
@@ -28,10 +36,15 @@ Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.356](https://doi
 | `csd` | `neuro/csd` | yes | CSD fibre orientation distributions at one or more lmax values. Must include the lmax used by tracking (lmax parameter, or every lmax up to it when single_lmax is false). |
 | `mask` | `neuro/mask` (5tt_masks) | yes | 5 tissue type mask |
 
+#### 📤 Outputs
+
 | Output | Datatype | Description |
 |---|---|---|
 | `track` | `neuro/track/tck` | Whole-brain Trekker tractogram (track.tck) combining all parameter runs. |
 | `mask` | `neuro/mask` |  |
+
+<details>
+<summary><b>⚙️ Parameters</b> (15)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -51,7 +64,7 @@ Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.356](https://doi
 | `maxtrials` | string | `default` | Maximum number of trials per seed (Trekker seed_maxTrials); 'default' leaves Trekker's default. |
 | `bestAtInit` | boolean | `false` | If true, Trekker uses the best initial direction at each seed (useBestAtInit). |
 
-Runtime: container `brainlife/mrtrix3:3.0.0`; 8 CPUs; 40 GB memory; 36 h walltime.
+</details>
 
 <!-- brainlife-app:end -->
 
